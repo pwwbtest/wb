@@ -1,13 +1,15 @@
 package com.west.venue.finder.service;
 
+import com.west.venue.model.Venue;
+
 import java.util.List;
 
 /**
  * Created by westp on 15/10/2016.
  */
-public class VenueFinderService {
+public class VenueFinderService implements VenueFinderAPI {
 
-    public List<String> getVenuesNearLocation(String location, int radius) {
+    public List<Venue> getVenuesNearLocation(String location, int radius) {
         return null;
     }
 }
