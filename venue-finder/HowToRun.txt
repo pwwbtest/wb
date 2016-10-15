@@ -1,0 +1,7 @@
+
+1. From directory containing root pom
+mvn clean install 
+
+2. Run the venue finder service
+java -jar venue-finder-service/target/venue-finder-service-1.4.1.RELEASE.jar
+
