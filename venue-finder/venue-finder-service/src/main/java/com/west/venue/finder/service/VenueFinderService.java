@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class VenueFinderService implements VenueFinderAPI {
 
-    public List<Venue> getVenuesNearLocation(String location, int radius) {
+    public List<Venue> getVenuesNearLocation(String oAuthToken, String location, int radiusMetres) {
         return null;
     }
 }
