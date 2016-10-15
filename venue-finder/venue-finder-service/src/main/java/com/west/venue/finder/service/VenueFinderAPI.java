@@ -9,5 +9,5 @@ import java.util.List;
  */
 public interface VenueFinderAPI {
 
-    public List<Venue> getVenuesNearLocation(String location, int radius);
+    public List<Venue> getVenuesNearLocation(String oAuthToken, String location, int radiusMetres);
 }
