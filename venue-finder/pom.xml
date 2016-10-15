@@ -6,7 +6,11 @@
 
     <groupId>com.west</groupId>
     <artifactId>venue-finder</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>venue-finder-service</module>
+    </modules>
 
 
 </project>
