@@ -23,6 +23,10 @@ public class VenueFinderServiceTests {
     @Test
     public void testGetVenuesNearLocation() {
 
-        assertNotNull(venueFinderService.getVenuesNearLocation(null, -1));
+        String oAuthToken = null;
+        String location = "Chicago";
+        int radiusMetres = 800;
+
+        assertNotNull(venueFinderService.getVenuesNearLocation(oAuthToken, location, radiusMetres));
     }
 }
