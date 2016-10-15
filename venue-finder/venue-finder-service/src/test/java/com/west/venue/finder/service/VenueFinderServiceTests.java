@@ -1,6 +1,7 @@
 package com.west.venue.finder.service;
 
 import com.west.config.SpringTestConfig;
+import com.west.venue.model.Location;
 import com.west.venue.model.Venue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,17 +28,27 @@ public class VenueFinderServiceTests {
     private VenueFinderService venueFinderService;
 
     @Test
-    public void testGetVenuesNearLocation() {
+    public void testGetVenuesNearLocationResponsePopulated() {
 
-        String location = "Chicago";
+        String locationToSearchFor = "Chicago";
         int radiusMetres = 800;
 
-        List<Venue> venues = venueFinderService.getVenuesNearLocation(PUBLIC_OAUTH_TOKEN, location, radiusMetres);
+        List<Venue> venues = venueFinderService.getVenuesNearLocation(PUBLIC_OAUTH_TOKEN, locationToSearchFor, radiusMetres);
         assertNotNull(venues);
         assertTrue(venues.size() > 0);
 
+        Location location = null;
         for(Venue venue: venues) {
+            assertNotNull(venue.getContact());
+            assertNotNull(venue.getId());
+            assertNotNull(venue.getPhone());
             assertNotNull(venue.getLocation());
+
+            location = venue.getLocation();
+            assertNotNull(location.getAddress());
+            assertNotNull(location.getCrossStreet());
+            assertNotNull(location.getLongitude());
+            assertNotNull(location.getLattitude());
         }
     }
 }
