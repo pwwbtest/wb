@@ -6,8 +6,8 @@ package com.west.venue.model;
 public class Venue {
 
     private String id;
-    private String contact;
-    private String phone;
+    private Contact contact;
+    private String name;
     private Location location;
 
     public String getId() {
@@ -18,20 +18,20 @@ public class Venue {
         this.id = id;
     }
 
-    public String getContact() {
+    public Contact getContact() {
         return contact;
     }
 
-    public void setContact(String contact) {
+    public void setContact(Contact contact) {
         this.contact = contact;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getName() {
+        return name;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Location getLocation() {

@@ -1,12 +1,14 @@
 package com.west.venue.model;
 
+import java.util.List;
+
 /**
  * Created by westp on 15/10/2016.
  */
 public class CallResponse {
 
     private Meta meta;
-    private Notifications notifications;
+    private List<Notifications> notifications;
     private Response response;
 
     public Meta getMeta() {
@@ -17,11 +19,11 @@ public class CallResponse {
         this.meta = meta;
     }
 
-    public Notifications getNotifications() {
+    public List<Notifications> getNotifications() {
         return notifications;
     }
 
-    public void setNotifications(Notifications notifications) {
+    public void setNotifications(List<Notifications> notifications) {
         this.notifications = notifications;
     }
 

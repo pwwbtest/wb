@@ -1,5 +1,7 @@
 package com.west.venue.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Created by westp on 15/10/2016.
  */
@@ -10,6 +12,8 @@ public class Location {
     private String address;
     private String crossStreet;
 
+
+    @JsonProperty("lat")
     public String getLattitude() {
         return lattitude;
     }
@@ -18,6 +22,7 @@ public class Location {
         this.lattitude = lattitude;
     }
 
+    @JsonProperty("lng")
     public String getLongitude() {
         return longitude;
     }
