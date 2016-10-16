@@ -34,21 +34,21 @@ public class VenueFinderServiceTests {
 
     @Test(expected=VenueFinderServiceException.class)
     public void testGetVenuesNearLocationNullOauthToken() throws VenueFinderServiceException {
-        String locationToSearchFor = "chicago";
+        String locationToSearchFor = "london";
         int radiusMetres = 800;
         List<Venue> venues = venueFinderService.getVenuesNearLocation(null, locationToSearchFor, radiusMetres);
     }
 
     @Test(expected=VenueFinderServiceException.class)
     public void testGetVenuesNearLocationEmptyOauthToken() throws VenueFinderServiceException {
-        String locationToSearchFor = "chicago";
+        String locationToSearchFor = "london";
         int radiusMetres = 800;
         List<Venue> venues = venueFinderService.getVenuesNearLocation("", locationToSearchFor, radiusMetres);
     }
 
     @Test(expected=VenueFinderServiceException.class)
     public void testGetVenuesNearLocationInvalidOauthToken() throws VenueFinderServiceException {
-        String locationToSearchFor = "chicago";
+        String locationToSearchFor = "london";
         int radiusMetres = 800;
         List<Venue> venues = venueFinderService.getVenuesNearLocation("abc", locationToSearchFor, radiusMetres);
     }
@@ -75,14 +75,14 @@ public class VenueFinderServiceTests {
 
     @Test(expected=VenueFinderServiceException.class)
     public void testGetVenuesNearLocationZeroRadius() throws VenueFinderServiceException {
-        String locationToSearchFor = "chicago";
+        String locationToSearchFor = "london";
         int radiusMetres = 0;
         List<Venue> venues = venueFinderService.getVenuesNearLocation(PUBLIC_OAUTH_TOKEN, locationToSearchFor, radiusMetres);
     }
 
     @Test(expected=VenueFinderServiceException.class)
     public void testGetVenuesNearLocationNegativeRadius() throws VenueFinderServiceException {
-        String locationToSearchFor = "chicago";
+        String locationToSearchFor = "london";
         int radiusMetres = -1;
         List<Venue> venues = venueFinderService.getVenuesNearLocation(PUBLIC_OAUTH_TOKEN, locationToSearchFor, radiusMetres);
     }
@@ -92,7 +92,7 @@ public class VenueFinderServiceTests {
 
     @Test(expected=VenueFinderServiceException.class)
     public void testGetVenuesNearLocationZeroLimit() throws VenueFinderServiceException {
-        String locationToSearchFor = "chicago";
+        String locationToSearchFor = "london";
         int radiusMetres = 1000;
         int limit = 0;
         List<Venue> venues = venueFinderService.getVenuesNearLocation(PUBLIC_OAUTH_TOKEN, locationToSearchFor, radiusMetres, limit);
@@ -100,7 +100,7 @@ public class VenueFinderServiceTests {
 
     @Test(expected=VenueFinderServiceException.class)
     public void testGetVenuesNearLocationNegativeLimit() throws VenueFinderServiceException {
-        String locationToSearchFor = "chicago";
+        String locationToSearchFor = "london";
         int radiusMetres = 1000;
         int limit = -1;
         List<Venue> venues = venueFinderService.getVenuesNearLocation(PUBLIC_OAUTH_TOKEN, locationToSearchFor, radiusMetres, limit);
