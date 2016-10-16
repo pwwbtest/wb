@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * Created by westp on 15/10/2016.
+ * This is partially populated only. More data is available in the feed and can be incorporated here if required.
  */
 public class Response {
 
