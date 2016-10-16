@@ -1,13 +1,10 @@
 package com.west.controller;
 
-import com.west.venue.finder.service.VenueFinderService;
 import com.west.venue.model.Location;
 import com.west.venue.model.Venue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +16,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.*;
 
-import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,17 +27,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class VenueFinderControllerTest {
 
+    private static final String VALID_PUBLIC_OAUTH_TOKEN = "T3EEDQMOYVDGVB5LNXNZLKDT5PXUHIW2RHGY4N0QDB5GON0V";
+
     @Autowired
     private WebApplicationContext wac;
 
     private MockMvc mockMvc;
 
-    @Mock
-    private VenueFinderService venueFinderService;
-
     @Before
     public void before() {
-        MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(wac)
                 .build();
@@ -55,35 +49,124 @@ public class VenueFinderControllerTest {
         int radiusMetres = 1000;
         int limit = 1;
 
-        given(this.venueFinderService.getVenuesNearLocation(oauthToken, location, radiusMetres, limit)).willReturn(getKnownResponse());
         this.mockMvc.perform(get("/venue")
                 .param("oauth_token", oauthToken)
                 .param("location", location)
                 .param("radius", Integer.toString(radiusMetres))
                 .param("limit", Integer.toString(limit))
-                .accept(MediaType.parseMediaType(MediaType.APPLICATION_JSON_UTF8_VALUE)))
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void testFindVenuesBadRequestWhenEmptyLocation() throws Exception {
+
+        String oauthToken = VALID_PUBLIC_OAUTH_TOKEN;
+        String location = "";
+        int radiusMetres = 1000;
+        int limit = 1;
+
+        this.mockMvc.perform(get("/venue")
+                .param("oauth_token", oauthToken)
+                .param("location", location)
+                .param("radius", Integer.toString(radiusMetres))
+                .param("limit", Integer.toString(limit))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void testFindVenuesBadRequestWhenZeroRadius() throws Exception {
+
+        String oauthToken = VALID_PUBLIC_OAUTH_TOKEN;
+        String location = "london";
+        int radiusMetres = 0;
+        int limit = 1;
+
+        this.mockMvc.perform(get("/venue")
+                .param("oauth_token", oauthToken)
+                .param("location", location)
+                .param("radius", Integer.toString(radiusMetres))
+                .param("limit", Integer.toString(limit))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void testFindVenuesBadRequestWhenNegativeRadius() throws Exception {
+
+        String oauthToken = VALID_PUBLIC_OAUTH_TOKEN;
+        String location = "london";
+        int radiusMetres = -1;
+        int limit = 1;
+
+        this.mockMvc.perform(get("/venue")
+                .param("oauth_token", oauthToken)
+                .param("location", location)
+                .param("radius", Integer.toString(radiusMetres))
+                .param("limit", Integer.toString(limit))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+
+    @Test
+    public void testFindVenuesBadRequestWhenZeroLimit() throws Exception {
+
+        String oauthToken = VALID_PUBLIC_OAUTH_TOKEN;
+        String location = "london";
+        int radiusMetres = 100;
+        int limit = 0;
+
+        this.mockMvc.perform(get("/venue")
+                .param("oauth_token", oauthToken)
+                .param("location", location)
+                .param("radius", Integer.toString(radiusMetres))
+                .param("limit", Integer.toString(limit))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void testFindVenuesBadRequestWhenNegativeLimit() throws Exception {
+
+        String oauthToken = VALID_PUBLIC_OAUTH_TOKEN;
+        String location = "london";
+        int radiusMetres = 100;
+        int limit = -1;
+
+        this.mockMvc.perform(get("/venue")
+                .param("oauth_token", oauthToken)
+                .param("location", location)
+                .param("radius", Integer.toString(radiusMetres))
+                .param("limit", Integer.toString(limit))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
 
     @Test
     public void testFindVenues() throws Exception {
 
-        String oauthToken = "T3EEDQMOYVDGVB5LNXNZLKDT5PXUHIW2RHGY4N0QDB5GON0V";
+        String oauthToken = VALID_PUBLIC_OAUTH_TOKEN;
         String location = "london";
         int radiusMetres = 1000;
         int limit = 1;
 
-        given(this.venueFinderService.getVenuesNearLocation(oauthToken, location, radiusMetres, limit)).willReturn(getKnownResponse());
         this.mockMvc.perform(get("/venue")
                 .param("oauth_token", oauthToken)
                 .param("location", location)
                 .param("radius", Integer.toString(radiusMetres))
-                .param("limit", Integer.toString(limit)).
-                        accept(MediaType.parseMediaType(MediaType.APPLICATION_JSON_UTF8_VALUE)))
+                .param("limit", Integer.toString(limit))
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
 
