@@ -5,6 +5,7 @@ import com.west.venue.finder.service.VenueFinderServiceException;
 import com.west.venue.model.Venue;
 import com.west.venue.model.VenueFinderServiceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,11 +27,12 @@ public class VenueFinderController {
         this.venueFinderService = venueFinderService;
     }
 
-    @RequestMapping(value="/venue", method= RequestMethod.GET)
-    public ResponseEntity<VenueFinderServiceResponse> findVenues(@RequestParam(value="oauth_token") String oauthToken,
-                                 @RequestParam(value="location") String location,
-                                 @RequestParam(value="radius") int radiusMetres,
-                                 @RequestParam(value="limit", defaultValue = "10") int limit) throws VenueFinderServiceException {
+    @RequestMapping(value="/venue", method= RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<VenueFinderServiceResponse> findVenues(
+            @RequestParam(value="oauth_token") String oauthToken,
+            @RequestParam(value="location") String location,
+            @RequestParam(value="radius") Integer radiusMetres,
+            @RequestParam(value="limit", defaultValue = "10") int limit) throws VenueFinderServiceException {
 
         VenueFinderServiceResponse venueFinderServiceResponse = null;
         ResponseEntity<VenueFinderServiceResponse> responseEntity = null;
@@ -38,10 +40,10 @@ public class VenueFinderController {
         try {
             venues = venueFinderService.getVenuesNearLocation(oauthToken, location, radiusMetres, limit);
             venueFinderServiceResponse =  new VenueFinderServiceResponse(venues);
-            responseEntity = ResponseEntity.ok().body(venueFinderServiceResponse);
+            responseEntity = ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(venueFinderServiceResponse);
         } catch(VenueFinderServiceException e) {
             venueFinderServiceResponse = new VenueFinderServiceResponse(e.getStatusCode(), "Request failed: " + e.getMessage());
-            responseEntity = ResponseEntity.status(e.getStatusCode()).body(venueFinderServiceResponse);
+            responseEntity = ResponseEntity.status(e.getStatusCode()).contentType(MediaType.APPLICATION_JSON).body(venueFinderServiceResponse);
         }
 
         return responseEntity;
