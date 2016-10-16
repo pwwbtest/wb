@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -28,6 +29,8 @@ public class VenueFinderServiceTests {
     @Autowired
     private VenueFinderService venueFinderService;
 
+
+    // OAUTH token tests
 
     @Test(expected=VenueFinderServiceException.class)
     public void testGetVenuesNearLocationNullOauthToken() throws VenueFinderServiceException {
@@ -51,6 +54,7 @@ public class VenueFinderServiceTests {
     }
 
 
+    // Location tests
 
     @Test(expected=VenueFinderServiceException.class)
     public void testGetVenuesNearLocationNullLocation() throws VenueFinderServiceException {
@@ -66,6 +70,9 @@ public class VenueFinderServiceTests {
         List<Venue> venues = venueFinderService.getVenuesNearLocation(PUBLIC_OAUTH_TOKEN, locationToSearchFor, radiusMetres);
     }
 
+
+    // Radius tests
+
     @Test(expected=VenueFinderServiceException.class)
     public void testGetVenuesNearLocationZeroRadius() throws VenueFinderServiceException {
         String locationToSearchFor = "chicago";
@@ -79,6 +86,46 @@ public class VenueFinderServiceTests {
         int radiusMetres = -1;
         List<Venue> venues = venueFinderService.getVenuesNearLocation(PUBLIC_OAUTH_TOKEN, locationToSearchFor, radiusMetres);
     }
+
+
+    // Limit tests
+
+    @Test(expected=VenueFinderServiceException.class)
+    public void testGetVenuesNearLocationZeroLimit() throws VenueFinderServiceException {
+        String locationToSearchFor = "chicago";
+        int radiusMetres = 1000;
+        int limit = 0;
+        List<Venue> venues = venueFinderService.getVenuesNearLocation(PUBLIC_OAUTH_TOKEN, locationToSearchFor, radiusMetres, limit);
+    }
+
+    @Test(expected=VenueFinderServiceException.class)
+    public void testGetVenuesNearLocationNegativeLimit() throws VenueFinderServiceException {
+        String locationToSearchFor = "chicago";
+        int radiusMetres = 1000;
+        int limit = -1;
+        List<Venue> venues = venueFinderService.getVenuesNearLocation(PUBLIC_OAUTH_TOKEN, locationToSearchFor, radiusMetres, limit);
+    }
+
+
+
+    @Test
+    public void testGetVenuesNearLocationWithDefaultLimit() throws VenueFinderServiceException {
+        String locationToSearchFor = "london";
+        int radiusMetres = 800;
+        List<Venue> venues = venueFinderService.getVenuesNearLocation(PUBLIC_OAUTH_TOKEN, locationToSearchFor, radiusMetres);
+        assertEquals(VenueFinderService.DEFAULT_LIMIT, venues.size());
+    }
+
+    @Test
+    public void testGetVenuesNearLocationWithExplicitLimit() throws VenueFinderServiceException {
+        String locationToSearchFor = "london";
+        int radiusMetres = 800;
+        int limit = 3;
+        List<Venue> venues = venueFinderService.getVenuesNearLocation(PUBLIC_OAUTH_TOKEN, locationToSearchFor, radiusMetres, limit);
+        assertEquals(limit, venues.size());
+    }
+
+
 
     @Test
     public void testGetVenuesNearLocationResponsePopulated() throws VenueFinderServiceException {

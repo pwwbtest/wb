@@ -18,25 +18,23 @@ import java.util.Map;
  */
 public class VenueFinderService implements VenueFinderAPI {
 
+    public static final int DEFAULT_LIMIT = 10;
+
     @Value("${venue_finder_endpoint}")
     private String venueServiceEndpoint;
 
     public List<Venue> getVenuesNearLocation(String oAuthToken, String location, int radiusMetres) throws VenueFinderServiceException {
+        return getVenuesNearLocation(oAuthToken, location, radiusMetres, DEFAULT_LIMIT);
+    }
 
-        if(radiusMetres < 1) {
-            throw new VenueFinderServiceException("Invalid radiusMetres. Must be positive integer.");
-        }
+    @Override
+    public List<Venue> getVenuesNearLocation(String oAuthToken, String location, int radiusMetres, int limit) throws VenueFinderServiceException {
 
-        Map<String, String> queryParams = new HashMap<String, String>();
-        queryParams.put("intent","browse");
-        queryParams.put("near", location);
-        queryParams.put("radius", Integer.toString(radiusMetres));
-        queryParams.put("oauth_token", oAuthToken);
-        queryParams.put("v", "20161015");
+        validateLimit(limit);
+        validateRadius(radiusMetres);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        HttpEntity<?> requestEntity = new HttpEntity<Object>(headers);
+        Map<String, String> queryParams = getQueryParamMap(oAuthToken, location, radiusMetres, limit);
+        HttpEntity<?> requestEntity = getRequestEntity();
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<CallResponse> resp = null;
@@ -57,5 +55,35 @@ public class VenueFinderService implements VenueFinderAPI {
         }
 
         return venues;
+    }
+
+    private HttpEntity<?> getRequestEntity() {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        return new HttpEntity<Object>(headers);
+    }
+
+    private Map<String, String> getQueryParamMap(String oAuthToken, String location, int radiusMetres, int limit) {
+        Map<String, String> queryParams = new HashMap<String, String>();
+        queryParams.put("intent","browse");
+        queryParams.put("near", location);
+        queryParams.put("radius", Integer.toString(radiusMetres));
+        queryParams.put("limit", Integer.toString(limit));
+        queryParams.put("oauth_token", oAuthToken);
+        queryParams.put("v", "20161015");
+        return queryParams;
+    }
+
+    private void validateRadius(int radiusMetres) throws VenueFinderServiceException {
+        if(radiusMetres < 1) {
+            throw new VenueFinderServiceException("Invalid radiusMetres. Must be positive integer.");
+        }
+    }
+
+    private void validateLimit(int limit) throws VenueFinderServiceException {
+        if(limit < 1) {
+            throw new VenueFinderServiceException("Invalid limit. Must be positive integer.");
+        }
     }
 }
