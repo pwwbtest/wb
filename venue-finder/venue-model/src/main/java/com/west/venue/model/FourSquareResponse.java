@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by westp on 15/10/2016.
  */
-public class CallResponse {
+public class FourSquareResponse {
 
     private Meta meta;
     private List<Notifications> notifications;
