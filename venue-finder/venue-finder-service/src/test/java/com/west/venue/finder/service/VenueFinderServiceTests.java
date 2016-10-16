@@ -54,30 +54,30 @@ public class VenueFinderServiceTests {
 
     @Test(expected=VenueFinderServiceException.class)
     public void testGetVenuesNearLocationNullLocation() throws VenueFinderServiceException {
-        String locationToSearchFor = "chicago";
+        String locationToSearchFor = null;
         int radiusMetres = 800;
-        List<Venue> venues = venueFinderService.getVenuesNearLocation(PUBLIC_OAUTH_TOKEN, null, radiusMetres);
+        List<Venue> venues = venueFinderService.getVenuesNearLocation(PUBLIC_OAUTH_TOKEN, locationToSearchFor, radiusMetres);
     }
 
     @Test(expected=VenueFinderServiceException.class)
     public void testGetVenuesNearLocationEmptyLocation() throws VenueFinderServiceException {
-        String locationToSearchFor = "chicago";
+        String locationToSearchFor = "";
         int radiusMetres = 800;
-        List<Venue> venues = venueFinderService.getVenuesNearLocation(PUBLIC_OAUTH_TOKEN, null, radiusMetres);
+        List<Venue> venues = venueFinderService.getVenuesNearLocation(PUBLIC_OAUTH_TOKEN, locationToSearchFor, radiusMetres);
     }
 
     @Test(expected=VenueFinderServiceException.class)
     public void testGetVenuesNearLocationZeroRadius() throws VenueFinderServiceException {
         String locationToSearchFor = "chicago";
-        int radiusMetres = 800;
-        List<Venue> venues = venueFinderService.getVenuesNearLocation(PUBLIC_OAUTH_TOKEN, locationToSearchFor, 0);
+        int radiusMetres = 0;
+        List<Venue> venues = venueFinderService.getVenuesNearLocation(PUBLIC_OAUTH_TOKEN, locationToSearchFor, radiusMetres);
     }
 
     @Test(expected=VenueFinderServiceException.class)
     public void testGetVenuesNearLocationNegativeRadius() throws VenueFinderServiceException {
         String locationToSearchFor = "chicago";
-        int radiusMetres = 800;
-        List<Venue> venues = venueFinderService.getVenuesNearLocation(PUBLIC_OAUTH_TOKEN, locationToSearchFor, -1);
+        int radiusMetres = -1;
+        List<Venue> venues = venueFinderService.getVenuesNearLocation(PUBLIC_OAUTH_TOKEN, locationToSearchFor, radiusMetres);
     }
 
     @Test
