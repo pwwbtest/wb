@@ -2,13 +2,15 @@
 1. From directory containing root pom
 mvn clean install 
 
-2. Run the venue finder service
-java -jar venue-finder-service/target/venue-finder-service-1.4.1.RELEASE.jar
+2. In a terminal, run the venue finder service
+java -jar venue-finder-service/target/venue-finder-service-1.0-SNAPSHOT.jar
 
-3. Call the REST API as follows
-http://localhost:8080/venue?location=london&radius=800&oauth_token=T3EEDQMOYVDGVB5LNXNZLKDT5PXUHIW2RHGY4N0QDB5GON0V
+3. From a different terminal (using curl) or from a browser, call the REST API as follows
+curl "http://localhost:8080/venue?location=london&radius=800&oauth_token=T3EEDQMOYVDGVB5LNXNZLKDT5PXUHIW2RHGY4N0QDB5GON0V" | python -mjson.tool
 
 or
 
-http://localhost:8080/venue?location=london&radius=800&limit=3&oauth_token=T3EEDQMOYVDGVB5LNXNZLKDT5PXUHIW2RHGY4N0QDB5GON0V
+curl "http://localhost:8080/venue?location=london&radius=800&limit=3&oauth_token=T3EEDQMOYVDGVB5LNXNZLKDT5PXUHIW2RHGY4N0QDB5GON0V" | python -mjson.tool
+
+
 
