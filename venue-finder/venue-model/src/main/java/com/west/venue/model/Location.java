@@ -1,10 +1,12 @@
 package com.west.venue.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by westp on 15/10/2016.
  */
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Location {
 
     private String lattitude;
