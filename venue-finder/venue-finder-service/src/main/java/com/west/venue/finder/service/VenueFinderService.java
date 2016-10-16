@@ -1,7 +1,8 @@
 package com.west.venue.finder.service;
 
-import com.west.venue.model.CallResponse;
+import com.west.venue.model.FourSquareResponse;
 import com.west.venue.model.Venue;
+import com.west.venue.model.VenueFinderServiceResponse;
 import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.http.*;
@@ -37,25 +38,27 @@ public class VenueFinderService implements VenueFinderAPI {
         HttpEntity<?> requestEntity = getRequestEntity();
 
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<CallResponse> resp = null;
+        ResponseEntity<FourSquareResponse> resp = null;
         List<Venue> venues = null;
+        VenueFinderServiceResponse venueFinderServiceResponse = null;
 
         try {
-            resp = restTemplate.exchange(venueServiceEndpoint, HttpMethod.GET, requestEntity, CallResponse.class, queryParams);
-
+            resp = restTemplate.exchange(venueServiceEndpoint, HttpMethod.GET, requestEntity, FourSquareResponse.class, queryParams);
 
             if(resp.getStatusCode().is2xxSuccessful()) {
                 venues = resp.getBody().getResponse().getVenues();
+                venueFinderServiceResponse = new VenueFinderServiceResponse(venues);
             } else {
-                throw new VenueFinderServiceException("Request failed: " + resp.getStatusCode());
+                throw new VenueFinderServiceException(resp.getStatusCodeValue(), "Request failed: " + resp.toString());
             }
 
         } catch(HttpClientErrorException e) {
-            throw new VenueFinderServiceException("Request failed: " + e.getMessage());
+            throw new VenueFinderServiceException(e.getRawStatusCode(), "Request failed: " + e.getMessage());
         }
 
         return venues;
     }
+
 
     private HttpEntity<?> getRequestEntity() {
 
@@ -77,13 +80,13 @@ public class VenueFinderService implements VenueFinderAPI {
 
     private void validateRadius(int radiusMetres) throws VenueFinderServiceException {
         if(radiusMetres < 1) {
-            throw new VenueFinderServiceException("Invalid radiusMetres. Must be positive integer.");
+            throw new VenueFinderServiceException(HttpStatus.BAD_REQUEST.value(), "Invalid radiusMetres. Must be positive integer.");
         }
     }
 
     private void validateLimit(int limit) throws VenueFinderServiceException {
         if(limit < 1) {
-            throw new VenueFinderServiceException("Invalid limit. Must be positive integer.");
+            throw new VenueFinderServiceException(HttpStatus.BAD_REQUEST.value(), "Invalid limit. Must be positive integer.");
         }
     }
 }
