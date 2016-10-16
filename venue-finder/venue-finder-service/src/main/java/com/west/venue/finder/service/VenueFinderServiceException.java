@@ -5,7 +5,14 @@ package com.west.venue.finder.service;
  */
 public class VenueFinderServiceException extends Exception {
 
-    public VenueFinderServiceException(String message) {
+    private int statusCode;
+
+    public VenueFinderServiceException(int statusCode, String message) {
         super(message);
+        this.statusCode = statusCode;
+    }
+
+    public int getStatusCode() {
+        return statusCode;
     }
 }
