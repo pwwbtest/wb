@@ -1,8 +1,11 @@
 package com.west.venue.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 /**
  * Created by westp on 15/10/2016.
  */
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Venue {
 
     private String id;
