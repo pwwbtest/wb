@@ -1,4 +1,4 @@
-package com.west.launch;
+package com.west;
 
 import com.west.config.SpringConfig;
 import org.springframework.boot.SpringApplication;
