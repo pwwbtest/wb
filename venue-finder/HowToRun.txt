@@ -5,3 +5,10 @@ mvn clean install
 2. Run the venue finder service
 java -jar venue-finder-service/target/venue-finder-service-1.4.1.RELEASE.jar
 
+3. Call the REST API as follows
+http://localhost:8080/venue?location=london&radius=800&oauth_token=T3EEDQMOYVDGVB5LNXNZLKDT5PXUHIW2RHGY4N0QDB5GON0V
+
+or
+
+http://localhost:8080/venue?location=london&radius=800&limit=3&oauth_token=T3EEDQMOYVDGVB5LNXNZLKDT5PXUHIW2RHGY4N0QDB5GON0V
+
